@@ -10,7 +10,7 @@ session = Session()
 
 sidebar = st.sidebar
 
-sidebar.header("Add Student Data here")
+sidebar.header("Add Student Data here :-")
 sidebar.markdown('---')
 
 class_v = sidebar.text_input('Class')

@@ -5,7 +5,7 @@ Base = declarative_base()
 
 class Classreport(Base):
 
-    __tablename__ = "Class Report Generator"
+    __tablename__ = " Class Report Generator "
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     class1 = Column(String)
