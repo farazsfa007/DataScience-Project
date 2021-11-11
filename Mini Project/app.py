@@ -13,7 +13,7 @@ sidebar = st.sidebar
 sidebar.header("Add Student Data here :-")
 sidebar.markdown('---')
 
-class_v = sidebar.text_input('Class ')
+class_v = sidebar.text_input('Class')
 name_v = sidebar.text_input('Name')
 subject_v = sidebar.text_input('Subject')
 
