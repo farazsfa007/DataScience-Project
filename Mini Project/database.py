@@ -11,7 +11,9 @@ class Classreport(Base):
     class1 = Column(String)
     name = Column(String)
     course = Column(String)
-
+    total_marks=Column(Integer)
+    obtain_marks=Column(Integer)
+    
 if __name__ == "__main__":
     engine = create_engine("sqlite:///mydatabase.sqlite3")
     Base.metadata.create_all(engine)
