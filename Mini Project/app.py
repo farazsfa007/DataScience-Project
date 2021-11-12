@@ -2,6 +2,7 @@ import streamlit as st
 from database import Classreport
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+import pandas as pd
 
 engine = create_engine('sqlite:///mydatabase.sqlite3',
                        connect_args={'check_same_thread': False})
@@ -16,15 +17,15 @@ sidebar.markdown('---')
 class_v = sidebar.text_input('Class')
 name_v = sidebar.text_input('Name')
 subject_v = sidebar.text_input('Subject')
-tot_mrks_v= sidebar.number_input('Total Marks')
-obt_mrks_v= sidebar.number_input(('Obtain Marks'))
+tot_mrks_v = sidebar.number_input('Total Marks')
+obt_mrks_v = sidebar.number_input(('Obtain Marks'))
 
 btn = sidebar.button("Save Data")
 
 if btn:
     try:
         myphone = Classreport(class1=class_v, name=name_v,
-                        course=subject_v,total_marks=tot_mrks_v, obtain_marks=obt_mrks_v)
+                              course=subject_v, total_marks=tot_mrks_v, obtain_marks=obt_mrks_v)
 
         session.add(myphone)
         session.commit()
@@ -45,7 +46,17 @@ def showDetails():
 
     data = session.query(Classreport).all()
 
-    col1, col2, col3, col4,col5,col6 = st.columns(6)
+    df = pd.read_sql_table(table_name="Class Report Generator",
+                           con=session.connection(), index_col="id")
+
+    classes = df['class1'].unique()
+
+    selClass = st.selectbox('Select Class', classes)
+
+    bca_students = df[df['class1'] == selClass]
+    st.bar_chart(bca_students.set_index('name')['obtain_marks'])
+
+    col1, col2, col3, col4, col5, col6 = st.columns(6)
 
     col1.subheader("Id")
     col2.subheader("Class")
@@ -53,7 +64,6 @@ def showDetails():
     col4.subheader("Subject")
     col5.subheader('Total Marks')
     col6.subheader('Obtain Marks')
-
 
     for entry in data:
 
@@ -74,7 +84,7 @@ def searchStudent():
 
     if search_id and search_btn:
         res = session.query(Classreport).filter_by(id=search_id).first()
-        col7, col8, col9, col10,col11,col12 = st.columns(6)
+        col7, col8, col9, col10, col11, col12 = st.columns(6)
         if res:
             col7.text(res.id)
             col8.text(res.class1)
