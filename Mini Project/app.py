@@ -18,16 +18,16 @@ class_v = sidebar.text_input('Class')
 name_v = sidebar.text_input('Name')
 subject_v = sidebar.text_input('Subject')
 tot_mrks_v = sidebar.number_input('Total Marks')
-obt_mrks_v = sidebar.number_input(('Obtain Marks'))
+obt_mrks_v = sidebar.number_input('Obtain Marks')
 
 btn = sidebar.button("Save Data")
 
 if btn:
     try:
-        myphone = Classreport(class1=class_v, name=name_v,
+        myreport = Classreport(class1=class_v, name=name_v,
                               course=subject_v, total_marks=tot_mrks_v, obtain_marks=obt_mrks_v)
 
-        session.add(myphone)
+        session.add(myreport)
         session.commit()
 
         st.success('Data Saved!!')
@@ -55,6 +55,11 @@ def showDetails():
 
     bca_students = df[df['class1'] == selClass]
     st.bar_chart(bca_students.set_index('name')['obtain_marks'])
+    
+    subjects=df['course'].unique()
+    selsub=st.selectbox('subjects',subjects)
+    subjects_marks = bca_students[bca_students['course'] == selsub]
+    st.bar_chart(subjects_marks.set_index('name')['obtain_marks'])
 
     col1, col2, col3, col4, col5, col6 = st.columns(6)
 
