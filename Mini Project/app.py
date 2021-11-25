@@ -21,6 +21,7 @@ subject_v = sidebar.text_input('Subject')
 tot_mrks_v = sidebar.number_input('Total Marks')
 obt_mrks_v = sidebar.number_input('Obtain Marks')
 
+
 def marksToGrade(marks):
     if(marks > 90):
         return 'A'
@@ -59,8 +60,6 @@ options = ['Introduction', 'View Data', 'Search Data']
 
 selOp = sidebar.selectbox('Select Option', options)
 
-
-
 def showDetails():
     st.header('Class Report Generator')
     st.markdown('---')
@@ -75,16 +74,20 @@ def showDetails():
     selClass = st.selectbox('Select Class', classes)
 
     bca_students = df[df['class1'] == selClass]
+    st.subheader('Bar Chart for Subject')
     st.bar_chart(bca_students.set_index('name')['obtain_marks'])
+    st.subheader('Pie Chart for Grade')
     st.plotly_chart(px.pie(data_frame=bca_students.groupby('grade', as_index=False).count(), labels='grade', values='name', names="grade"))
     
     subjects=df['course'].unique()
     selsub=st.selectbox('subjects',subjects)
     subjects_marks = bca_students[bca_students['course'] == selsub]
+    st.subheader('Bar Chart for Name and Marks')
     st.bar_chart(subjects_marks.set_index('name')['obtain_marks'])
+    st.subheader('Pie Chart for Grade')
     st.plotly_chart(px.pie(data_frame=subjects_marks.groupby('grade', as_index=False).count(), labels='grade', values='name', names="grade"))
 
-    col1, col2, col3, col4, col5, col6 = st.columns(6)
+    col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
 
     col1.subheader("Id")
     col2.subheader("Class")
@@ -92,7 +95,7 @@ def showDetails():
     col4.subheader("Subject")
     col5.subheader('Total Marks')
     col6.subheader('Obtain Marks')
-    col6.subheader('Grade')
+    col7.subheader('Grade')
 
     for entry in data:
 
@@ -101,9 +104,10 @@ def showDetails():
         col3.text(entry.name)
         col4.text(entry.course)
         col5.text(entry.total_marks)
-        col6.text(entry.grade)
+        col6.text(entry.obtain_marks)
+        col7.text(entry.grade)
 
-    del_id = st.number_input("Enter id to delete")
+    del_id = st.number_input("Enter Id to Delete")
     del_btn = st.button("Delete")
     
     if del_id and del_btn:
@@ -121,7 +125,7 @@ def searchStudent():
 
     if search_id and search_btn:
         res = session.query(Classreport).filter_by(id=search_id).first()
-        col7, col8, col9, col10, col11, col12 = st.columns(6)
+        col7, col8, col9, col10, col11, col12, col13 = st.columns(7)
         if res:
             col7.text(res.id)
             col8.text(res.class1)
@@ -129,6 +133,7 @@ def searchStudent():
             col10.text(res.course)
             col11.text(res.total_marks)
             col12.text(res.total_marks)
+            col13.text(res.grade)
 
 if selOp == options[0]:
     intro()
