@@ -17,7 +17,7 @@ if choice == "LogIn":
         st.success("Logged In as {}".format(username))
 
 elif choice == "SignUp":
-    st.subheader("SignUp")
+    st.subheader("Create New Account")
     username=st.sidebar.text_input("User Name")
     password=st.sidebar.text_input("Enter Password",type='password')
     if st.sidebar.button("Signup"):
